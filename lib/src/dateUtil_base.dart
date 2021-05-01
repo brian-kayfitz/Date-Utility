@@ -20,11 +20,19 @@ class DateUtil {
     return yearLength;
   }
 
-  String day(int length) {
-    final day = <String>['Saturday', 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+  String? day(int length) {
+    final day = <String>[
+      'Saturday',
+      'Sunday',
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday'
+    ];
 
     var count = 0;
-    String resultDay;
+    String? resultDay;
 
     for (var counter = 1; counter <= length; counter++) {
       final check = ((counter > 639798) && (counter < 639811));
@@ -45,38 +53,53 @@ class DateUtil {
   }
 
   String month(final int monthNum) {
-    final month = <String>['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    final month = <String>[
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
     return month[monthNum - 1];
   }
 
   int daysInMonth(final int monthNum, final int year) {
-    List<int> monthLength = List(12);
+    switch (monthNum) {
+      case 0:
+      case 2:
+      case 4:
+      case 6:
+      case 7:
+      case 9:
+      case 11:
+        return 31;
 
-    monthLength[0] = 31;
-    monthLength[2] = 31;
-    monthLength[4] = 31;
-    monthLength[6] = 31;
-    monthLength[7] = 31;
-    monthLength[9] = 31;
-    monthLength[11] = 31;
-    monthLength[3] = 30;
-    monthLength[8] = 30;
-    monthLength[5] = 30;
-    monthLength[10] = 30;
+      case 3:
+      case 5:
+      case 8:
+      case 10:
+        return 30;
 
-    if (leapYear(year) == true)
-      monthLength[1] = 29;
-    else
-      monthLength[1] = 28;
+      case 1:
+        return leapYear(year) ? 29 : 28;
 
-    return monthLength[monthNum - 1];
+      default:
+        throw RangeError.range(monthNum, 0, 11);
+    }
   }
 
   int daysPastInYear(final int monthNum, final int dayNum, final int year) {
     var totalMonthLength = 0;
 
     for (var count = 1; count < monthNum; count++) {
-      totalMonthLength += daysInMonth(count, year);
+      totalMonthLength += daysInMonth(count, year)!;
     }
 
     var monthLengthTotal = totalMonthLength + dayNum;
@@ -84,7 +107,8 @@ class DateUtil {
     return monthLengthTotal;
   }
 
-  totalLengthOfDays(final int monthNum, final int dayNum, final int year) => daysPastInYear(monthNum, dayNum, year) + yearLength(year);
+  totalLengthOfDays(final int monthNum, final int dayNum, final int year) =>
+      daysPastInYear(monthNum, dayNum, year) + yearLength(year);
 
   void printMonthCalendar(final int monthNum, final int year) {
     int dayNum = 1;
@@ -100,7 +124,7 @@ class DateUtil {
     for (int i = 1; i <= 6; i++) {
       for (int j = 1; j <= 7; j++) {
         if (dayNum >= dayOfWeek) {
-          if (dayDays <= daysInMonth(monthNum, year)) {
+          if (dayDays <= daysInMonth(monthNum, year)!) {
             stdout.write('${dayDays}\t');
           }
           ++dayDays;
