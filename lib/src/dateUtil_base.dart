@@ -99,7 +99,7 @@ class DateUtil {
     var totalMonthLength = 0;
 
     for (var count = 1; count < monthNum; count++) {
-      totalMonthLength += daysInMonth(count, year)!;
+      totalMonthLength += daysInMonth(count, year);
     }
 
     var monthLengthTotal = totalMonthLength + dayNum;
@@ -124,7 +124,7 @@ class DateUtil {
     for (int i = 1; i <= 6; i++) {
       for (int j = 1; j <= 7; j++) {
         if (dayNum >= dayOfWeek) {
-          if (dayDays <= daysInMonth(monthNum, year)!) {
+          if (dayDays <= daysInMonth(monthNum, year)) {
             stdout.write('${dayDays}\t');
           }
           ++dayDays;
